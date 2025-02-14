@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: niki-test
+
+patchesStrategicMerge:
+- replica-and-rollout-strategy.yaml
+- config.yaml
+- resource-limit.yaml
+
+images:
+- name: syngit.txxcd.com:4567/niki/games-admin-static
+  newName: testdev.tencentcloudcr.com/niki/games-admin-static
+  newTag: aa02a5ac8c648636ec5facdab97964ae6af7f6aa-57933
+resources:
+- ../../base
+commonAnnotations:
+  appENV: test
+  gitBranch: develop
+  gitCommitMessage: Merge branch 'mycard_nets_qr' into 'develop'
+  gitCommitSHA: aa02a5ac8c648636ec5facdab97964ae6af7f6aa
+  gitJobID: "148414"
+  gitUser: huaning.zhu@maitang001.com

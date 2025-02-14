@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: niki-pre
+
+patchesStrategicMerge:
+- replica-and-rollout-strategy.yaml
+- config.yaml
+- resource-limit.yaml
+
+images:
+- name: syngit.txxcd.com:4567/niki/games-admin-static
+  newName: registry-pro.maitang.co/niki/games-admin-static
+  newTag: 71bca68507f99d0822cc8ce233ddfd33f2170bb7-63532
+resources:
+- ../../../base
+commonAnnotations:
+  appENV: pre
+  gitBranch: task-20210709
+  gitCommitMessage: 冲突
+  gitCommitSHA: 71bca68507f99d0822cc8ce233ddfd33f2170bb7
+  gitJobID: "167669"
+  gitUser: zhe.gong@maitang001.com

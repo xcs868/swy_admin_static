@@ -1,0 +1,24 @@
+version: '3.8'  # 指定一个明确的版本号
+services:
+  games-admin:
+    image: ${SWY_DEBUG_IMAGE_STATIC}
+    container_name: ${SWY_ADMIN_STATIC_NAME}
+    environment:
+      - "TIMEZONE=Asia/Shanghai"
+      - "APP_SYSTEM_ENV=docker"
+      - "VITE_APP_ENV=${VITE_APP_ENV}"
+      - "VITE_APP_BASE_URL=${VITE_APP_BASE_URL}"
+      - "VITE_APP_WS_URL=${VITE_APP_WS_URL}"
+      - "VITE_APP_UPLOAD_LOCAL_URL=${VITE_APP_UPLOAD_LOCAL_URL}"
+      - "VITE_APP_UPLOAD_QINIU_URL=${VITE_APP_UPLOAD_QINIU_URL}"
+      - "VITE_APP_PROXY_PREFIX=${VITE_APP_PROXY_PREFIX}"
+      - "APP_NAME=${SWY_ADMIN_STATIC_NAME}"
+    env_file:
+      - ../.env
+    working_dir: "/var/www/html"
+    dns:
+      - ${SWY_DNS}
+    ports:
+      - 2022:80
+    volumes:
+      - ${SWY_SERVICE_CODE}/${SWY_ADMIN_NAME}:/var/www/html

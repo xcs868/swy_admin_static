@@ -1,0 +1,31 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: niki-pro
+
+patchesStrategicMerge:
+- replica-and-rollout-strategy.yaml
+- config.yaml
+- resource-limit.yaml
+
+images:
+- name: syngit.txxcd.com:4567/niki/games-admin-static
+  newName: registry-pro.maitang.co/niki/games-admin-static
+  newTag: 915ec4bd86d1e2d6ee7981d2a4d00ef02a93df2c-63601
+- name: syngit.txxcd.com:4567/docker/config-sync
+  newName: registry-pro.maitang.co/docker/config-sync
+  newTag: v3
+- name: syngit.txxcd.com:4567/docker/optimizer
+  newName: registry-pro.maitang.co/docker/optimizer
+  newTag: latest
+resources:
+- ../../../base
+- ./hpa.yaml
+#- ./clean-cdn-cache.yaml
+commonAnnotations:
+  appENV: product
+  gitBranch: master
+  gitCommitMessage: Merge branch 'task-20210709' into 'master'
+  gitCommitSHA: 915ec4bd86d1e2d6ee7981d2a4d00ef02a93df2c
+  gitJobID: "167907"
+  gitUser: shengqiang.he@maitang001.com

@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: games-admin-static
+  name: games-admin-static
+spec:
+  progressDeadlineSeconds: 600
+
+  selector:
+    matchLabels:
+      app: games-admin-static
+  template:
+    metadata:
+      labels:
+        app: games-admin-static
+    spec:
+      nodeSelector:
+        kind: worker
+      containers:
+        - image: syngit.txxcd.com:4567/niki/games-admin-static:latest
+          name: games-admin-static
+          ports:
+            - containerPort: 80
+              name: tcp
+          resources:
+            requests:
+              cpu: 20m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            failureThreshold: 3
+            timeoutSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            failureThreshold: 3
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 15
+      volumes:
+        - name: config-volume
+          configMap:
+            name: games-admin-static-config
+      terminationGracePeriodSeconds: 15
+      imagePullSecrets:
+        - name: tencent-registry-maitang
+
